@@ -2439,6 +2439,22 @@ Template.body.helpers({
     });
     return examples;
   },
+  unlabelledMatchingExamples() {
+    var examples = getMatchingUnlabelledExamples();
+    examples.forEach(function(example) {
+      example.clusterContext = 'unlabelled';
+      render(example);
+    });
+    return examples;
+  },
+  unlabelledUnmatchingExamples() {
+    var examples = getUnmatchingUnlabelledExamples();
+    examples.forEach(function(example) {
+      example.clusterContext = 'unlabelled';
+      render(example);
+    });
+    return examples;
+  },
   labelledPositiveExamples() {
     var examples = Examples.find({label: 'positive'}, {sort: {label: -1}}).fetch();
     examples.forEach(function(example) {
@@ -2447,8 +2463,40 @@ Template.body.helpers({
     });
     return examples;
   },
+  labelledMatchingPositiveExamples() {
+    var examples = getMatchingPositiveExamples();
+    examples.forEach(function(example) {
+      example.clusterContext = 'labelled';
+      render(example);
+    });
+    return examples;
+  },
+  labelledUnmatchingPositiveExamples() {
+    var examples = getUnmatchingPositiveExamples();
+    examples.forEach(function(example) {
+      example.clusterContext = 'labelled';
+      render(example);
+    });
+    return examples;
+  },
   labelledNegativeExamples() {
     var examples = Examples.find({label: 'negative'}, {sort: {label: -1}}).fetch();
+    examples.forEach(function(example) {
+      example.clusterContext = 'labelled';
+      render(example);
+    });
+    return examples;
+  },
+  labelledMatchingNegativeExamples() {
+    var examples = getMatchingNegativeExamples();
+    examples.forEach(function(example) {
+      example.clusterContext = 'labelled';
+      render(example);
+    });
+    return examples;
+  },
+  labelledUnmatchingNegativeExamples() {
+    var examples = getUnmatchingNegativeExamples();
     examples.forEach(function(example) {
       example.clusterContext = 'labelled';
       render(example);

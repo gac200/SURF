@@ -436,20 +436,20 @@
                   </td>
                   <td> 
                     
-                    <div class="hovertooltip">{{countMatchingPositiveExamples}} 
+                    <div class="hovertooltip" data-toggle="modal" data-target="#positiveMatchingExamplesModal">{{countMatchingPositiveExamples}} 
                       <span class="hovertooltiptext">Number of <strong>positive</strong> examples matching the pattern.</span>
                     </div>
                   </td>
-                  <td> {{countMatchingUnlabelledExamples}} </td>
-                  <td> {{countMatchingNegativeExamples}} </td>
+                  <td> <div class="open-unlabelled-matching-examples-modal" data-toggle="modal" data-target="#unlabelledMatchingExamplesModal">{{countMatchingUnlabelledExamples}}</div></td>
+                  <td> <div class="open-negative-matching-examples-modal" data-toggle="modal" data-target="#negativeMatchingExamplesModal">{{countMatchingNegativeExamples}}</div></td>
                   
                 </tr>
                 <tr>
                   <td style="">No</td>
-                  <td> {{countUnmatchingPositiveExamples}} </td>
-                  <td> {{countUnmatchingUnlabelledExamples}} </td>
+                  <td> <div class="open-positive-unmatching-examples-modal" data-toggle="modal" data-target="#positiveUnmatchingExamplesModal">{{countUnmatchingPositiveExamples}}</div></td>
+                  <td> <div class="open-unlabelled-unmatching-examples-modal" data-toggle="modal" data-target="#unlabelledUnmatchingExamplesModal">{{countUnmatchingUnlabelledExamples}}</div></td>
                   <td> 
-                    <div class="hovertooltip">{{countUnmatchingNegativeExamples}} 
+                    <div class="hovertooltip" data-toggle="modal" data-target="#negativeUnmatchingExamplesModal">{{countUnmatchingNegativeExamples}} 
                       <span class="hovertooltiptext">Number of <strong>negative</strong> examples that do not match the pattern. Your goal is to maximize this number.</span>
                     </div>
 
@@ -650,6 +650,58 @@
       </div>
     </div>
   </div>
+  
+  <div class="modal" id="unlabelledMatchingExamplesModal" tabindex="-1" role="dialog" aria-labelledby="unlabelledMatchingExamplesModal" aria-hidden="true" style="margin-left:0;">
+    <div class="" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h5 class="modal-title" id="unlabelledMatchingExamplesModal">Unlabelled Matching Examples</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body row" style="height:85vh; max-height:100vh;">
+          <div class="col-md-6">
+             {{#each unlabelledMatchingExamples}}
+              {{> example}}
+              {{/each}}
+            </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" style="margin:auto">
+            <span aria-hidden="true">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="unlabelledUnmatchingExamplesModal" tabindex="-1" role="dialog" aria-labelledby="unlabelledUnmatchingExamplesModal" aria-hidden="true" style="margin-left:0;">
+    <div class="" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h5 class="modal-title" id="unlabelledUnmatchingExamplesModal">Unlabelled Unmatching Examples</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body row" style="height:85vh; max-height:100vh;">
+          <div class="col-md-6">
+             {{#each unlabelledUnmatchingExamples}}
+              {{> example}}
+              {{/each}}
+            </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" style="margin:auto">
+            <span aria-hidden="true">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="modal" id="positiveExamplesModal" tabindex="-1" role="dialog" aria-labelledby="positiveExamplesModal" aria-hidden="true" style="margin-left:0;">
     <div class="" role="document">
@@ -663,6 +715,58 @@
         <div class="modal-body row" style="height:85vh; max-height:100vh;">
           <div class="col-md-6">
              {{#each labelledPositiveExamples}}
+              {{> example}}
+              {{/each}}
+            </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" style="margin:auto">
+            <span aria-hidden="true">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="positiveMatchingExamplesModal" tabindex="-1" role="dialog" aria-labelledby="positiveMatchingExamplesModal" aria-hidden="true" style="margin-left:0;">
+    <div class="" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h5 class="modal-title" id="positiveMatchingExamplesModal">Positive Matching Examples</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body row" style="height:85vh; max-height:100vh;">
+          <div class="col-md-6">
+             {{#each labelledMatchingPositiveExamples}}
+              {{> example}}
+              {{/each}}
+            </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" style="margin:auto">
+            <span aria-hidden="true">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="positiveUnmatchingExamplesModal" tabindex="-1" role="dialog" aria-labelledby="positiveUnmatchingExamplesModal" aria-hidden="true" style="margin-left:0;">
+    <div class="" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h5 class="modal-title" id="positiveUnmatchingExamplesModal">Positive Unmatching Examples</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body row" style="height:85vh; max-height:100vh;">
+          <div class="col-md-6">
+             {{#each labelledUnmatchingPositiveExamples}}
               {{> example}}
               {{/each}}
             </div>
@@ -703,6 +807,57 @@
     </div>
   </div>
 
+  <div class="modal" id="negativeMatchingExamplesModal" tabindex="-1" role="dialog" aria-labelledby="negativeMatchingExamplesModal" aria-hidden="true" style="margin-left:0;">
+    <div class="" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h5 class="modal-title" id="negativeMatchingExamplesModal">Negative Matching Examples</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body row" style="height:85vh; max-height:100vh;">
+          <div class="col-md-6">
+             {{#each labelledMatchingNegativeExamples}}
+              {{> example}}
+              {{/each}}
+            </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" style="margin:auto">
+            <span aria-hidden="true">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="negativeUnmatchingExamplesModal" tabindex="-1" role="dialog" aria-labelledby="negativeUnmatchingExamplesModal" aria-hidden="true" style="margin-left:0;">
+    <div class="" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h5 class="modal-title" id="negativeUnmatchingExamplesModal">Negative Unmatching Examples</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body row" style="height:85vh; max-height:100vh;">
+          <div class="col-md-6">
+             {{#each labelledUnmatchingNegativeExamples}}
+              {{> example}}
+              {{/each}}
+            </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" style="margin:auto">
+            <span aria-hidden="true">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   
   <div class="modal" id="labelQueryExamplesModal" tabindex="-1" role="dialog" aria-labelledby="labelQueryExamplesModal" aria-hidden="true" style="margin-left:0;">
     <div class="" role="document">

@@ -2290,14 +2290,16 @@ var computeMatchingUnlabelledExamples = function() {
 
 var setDifference = function(cursor1, cursor2) {
   var set1 = [];
-  cursor1.forEach((example) => set1.push(example.exampleID));
-  set1 = new Set(set1);
+  cursor1.forEach((example) => set1.push(example));
 
   var set2 = [];
-  cursor2.forEach((example) => set2.push(example.exampleID));
-  set2 = new Set(set2);
+  cursor2.forEach((example) => set2.push(example));
 
-  return set1.difference(set2);
+  return set1.filter(example1 => {
+    return !set2.some(example2 => {
+      return example1.exampleID === example2.exampleID;
+    });
+  });
 }
 
 var getUnmatchingPositiveExamples = function() {
@@ -2322,7 +2324,7 @@ var getUnmatchingPositiveExamples = function() {
 }
 
 var computeUnmatchingPositiveExamples = function() {
-  return getUnmatchingPositiveExamples().size;
+  return getUnmatchingPositiveExamples().length;
 }
 
 var getUnmatchingNegativeExamples = function() {
@@ -2347,7 +2349,7 @@ var getUnmatchingNegativeExamples = function() {
 }
 
 var computeUnmatchingNegativeExamples = function() {
-  return getUnmatchingNegativeExamples().size;
+  return getUnmatchingNegativeExamples().length;
 }
 
 var getUnmatchingUnlabelledExamples = function() {
@@ -2372,7 +2374,7 @@ var getUnmatchingUnlabelledExamples = function() {
 }
 
 var computeUnmatchingUnlabelledExamples = function() {
-  return getUnmatchingUnlabelledExamples().size;
+  return getUnmatchingUnlabelledExamples().length;
 }
 
 Template.node.nodeRendered = function(subgraphs) {

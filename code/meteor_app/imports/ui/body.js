@@ -3312,6 +3312,9 @@ Template.breadcrumb.helpers({
  * Register the event listeners on the body template
  */
 Template.body.events({
+  'keydown .form-control-search' (event, instance) {
+    console.log(document.getElementById('search').value)
+  },
   'mouseenter .example-cluster' (event, instance) {
     var role = $(event.target).attr('data-cluster');
     $('.example-cluster[data-cluster="'+role+'"]').addClass('has_border');

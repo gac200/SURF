@@ -2402,6 +2402,14 @@ Template.body.helpers({
     });
     return examples;
   },
+  unlabelledExamples() {
+    var examples = Examples.find({label: '?'}, {sort: {label: -1}}).fetch();
+    examples.forEach(function(example) {
+      example.clusterContext = 'unlabelled';
+      render(example);
+    });
+    return examples;
+  },
   labelledPositiveExamples() {
     var examples = Examples.find({label: 'positive'}, {sort: {label: -1}}).fetch();
     examples.forEach(function(example) {

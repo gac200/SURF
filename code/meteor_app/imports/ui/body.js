@@ -3313,7 +3313,16 @@ Template.breadcrumb.helpers({
  */
 Template.body.events({
   'keydown .form-control-search' (event, instance) {
-    console.log(document.getElementById('search').value)
+    console.log(document.getElementById('search').value);
+    search = document.getElementById('search').value;
+    var skeleton = Session.get('skeleton');
+    
+    examples = [];
+    fetchShortestExamples({}).forEach(function(example){
+      if (example.rawCode.includes(search)) {
+        examples.push(example);
+      }
+    });;
   },
   'mouseenter .example-cluster' (event, instance) {
     var role = $(event.target).attr('data-cluster');

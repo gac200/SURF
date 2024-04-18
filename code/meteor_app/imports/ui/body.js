@@ -3312,8 +3312,56 @@ Template.breadcrumb.helpers({
  * Register the event listeners on the body template
  */
 Template.body.events({
-  'keydown .form-control-search' (event, instance) {
-    console.log(document.getElementById('search').value)
+  'keyup .form-control-search' (event, instance) {
+    var results = document.getElementById("results");
+    while (results.firstChild) {
+      results.firstChild.remove();
+    }
+    search = document.getElementById('search').value;
+    
+    fetchShortestExamples({}).forEach(function(example){
+      if (example.rawCode.includes(search)) {
+        var searchResultElement = document.createElement("option");
+        var searchIndex = example.rawCode.indexOf(search);
+        console.log(searchIndex);
+        var codeSnippet = "..." + example.rawCode.substring(Math.max(0, searchIndex - 5), Math.min(example.rawCode.length, searchIndex + search.length + 5)) + "...";
+        searchResultElement.value = example.exampleID.toString() + ": " + codeSnippet;
+        results.appendChild(searchResultElement);
+      }
+    });
+    // var nodes = document.getElementsByClassName('center');
+    // for (i = 0; i < nodes.length; i++) {
+    //   for (j = 0; j < examples.length; j++) {
+    //     if (nodes[i].innerText.toLowerCase().includes(examples[j])) {
+    //       col_md = nodes[i].parentNode.parentNode.parentNode.parentNode;
+    //       if (col_md.className.includes("col-md")){
+    //         col_md = col_md.parentNode.parentNode;
+    //         console.log(col_md.children[1].className);
+    //         var searchResultElement = document.createElement("result");
+    //         searchResultElement.value = col_md.children[1].className;
+    //         document.getElementById("results").appendChild(searchResultElement);
+    //       }
+    //     }
+    //   }
+    // }
+    // console.log(examples);
+
+
+    // clusters = [];
+    // for (let i = 0; i < 100; i++) {
+    //   if (document.getElementById('example-cluster-' + i + '-declaration')) {
+    //     console.log(document.getElementById('example-cluster-' + i + '-declaration'));
+    //   }
+    //   else if (document.getElementById('example-cluster-' + i + '-method')) {
+    //     console.log(i);
+    //   }
+    //   else if (document.getElementById('example-cluster-' + i + '-exception')) {
+    //     console.log(i);
+    //   }
+    //   else if (document.getElementById('example-cluster-' + i + '-error')) {
+    //     console.log(i);
+    //   }
+    // }
   },
   'mouseenter .example-cluster' (event, instance) {
     var role = $(event.target).attr('data-cluster');

@@ -2226,8 +2226,7 @@ var examplesThatBoostsBOverA = function() {
   // var selectorWithAdditionalSubgraphA = computeSelectorWithAdditionalSubgraphByText(skeleton, subgraphA);
 }
 
-
-var computeMatchingPositiveExamples = function() {
+var getMatchingPositiveExamples = function() {
   var skeleton = Session.get('skeleton');
 
   var selector = constructSelectorToFilterBaggedPatterns(computeSelectorFromSkeleton(skeleton));
@@ -2240,30 +2239,35 @@ var computeMatchingPositiveExamples = function() {
   } else {
     var mergedSelector = {'label': 'positive'};
   }
-  var currentCount = fetchShortestExamples(mergedSelector).count();
-  return currentCount;
+  return fetchShortestExamples(mergedSelector);
+}
+
+var computeMatchingPositiveExamples = function() {
+  return getMatchingPositiveExamples().count();
+}
+
+
+var getMatchingNegativeExamples = function() {
+  var skeleton = Session.get('skeleton');
+
+  var selector = constructSelectorToFilterBaggedPatterns(computeSelectorFromSkeleton(skeleton));
   
+  // find examples where label is 'negative' and 
+  // the example matches the selector
+  if (selector['$and']) {
+    var mergedSelectorConjunction = selector['$and'].concat({'label': 'negative'});
+    var mergedSelector = { '$and': structuredClone(mergedSelectorConjunction) };
+  } else {
+    var mergedSelector = {'label': 'negative'};
+  }
+  return fetchShortestExamples(mergedSelector);
 }
 
 var computeMatchingNegativeExamples = function() {
-  var skeleton = Session.get('skeleton');
-
-  var selector = constructSelectorToFilterBaggedPatterns(computeSelectorFromSkeleton(skeleton));
-  
-  // find examples where label is 'negative' and 
-  // the example matches the selector
-  if (selector['$and']) {
-    var mergedSelectorConjunction = selector['$and'].concat({'label': 'negative'});
-    var mergedSelector = { '$and': structuredClone(mergedSelectorConjunction) };
-  } else {
-    var mergedSelector = {'label': 'negative'};
-  }
-  var currentCount = fetchShortestExamples(mergedSelector).count();
-  return currentCount;
-  
+  return getMatchingNegativeExamples().count();
 }
 
-var computeMatchingUnlabelledExamples = function() {
+var getMatchingUnlabelledExamples = function() {
 
   var skeleton = Session.get('skeleton');
 
@@ -2277,12 +2281,28 @@ var computeMatchingUnlabelledExamples = function() {
   } else {
     var mergedSelector = {'label': '?'};
   }
-  var currentCount = fetchShortestExamples(mergedSelector).count();
-
-  return currentCount;
+  return fetchShortestExamples(mergedSelector);
 }
 
-var computeUnmatchingPositiveExamples = function() {
+var computeMatchingUnlabelledExamples = function() {
+  return getMatchingUnlabelledExamples().count();
+}
+
+var setDifference = function(cursor1, cursor2) {
+  var set1 = [];
+  cursor1.forEach((example) => set1.push(example));
+
+  var set2 = [];
+  cursor2.forEach((example) => set2.push(example));
+
+  return set1.filter(example1 => {
+    return !set2.some(example2 => {
+      return example1.exampleID === example2.exampleID;
+    });
+  });
+}
+
+var getUnmatchingPositiveExamples = function() {
   var skeleton = Session.get('skeleton');
 
   var selector = constructSelectorToFilterBaggedPatterns(computeSelectorFromSkeleton(skeleton));
@@ -2295,16 +2315,19 @@ var computeUnmatchingPositiveExamples = function() {
   } else {
     var mergedSelector = {'label': 'positive'};
   }
-  var matchingPositiveExamples = fetchShortestExamples(mergedSelector).count();
+  var matchingPositiveExamples = fetchShortestExamples(mergedSelector);
 
   // all positive
-  var allPositiveExamples = fetchShortestExamples({'label': 'positive'}).count();
+  var allPositiveExamples = fetchShortestExamples({'label': 'positive'});
 
-  var currentCount = allPositiveExamples - matchingPositiveExamples;
-  return currentCount;
+  return setDifference(allPositiveExamples, matchingPositiveExamples);
 }
 
-var computeUnmatchingNegativeExamples = function() {
+var computeUnmatchingPositiveExamples = function() {
+  return getUnmatchingPositiveExamples().length;
+}
+
+var getUnmatchingNegativeExamples = function() {
   var skeleton = Session.get('skeleton');
 
   var selector = constructSelectorToFilterBaggedPatterns(computeSelectorFromSkeleton(skeleton));
@@ -2317,16 +2340,19 @@ var computeUnmatchingNegativeExamples = function() {
   } else {
     var mergedSelector = {'label': 'negative'};
   }
-  var matchingNegativeExamples = fetchShortestExamples(mergedSelector).count();
+  var matchingNegativeExamples = fetchShortestExamples(mergedSelector);
 
   // all negative
-  var allNegativeExamples = fetchShortestExamples({'label': 'negative'}).count();
+  var allNegativeExamples = fetchShortestExamples({'label': 'negative'});
 
-  var currentCount = allNegativeExamples - matchingNegativeExamples;
-  return currentCount;
+  return setDifference(allNegativeExamples, matchingNegativeExamples);
 }
 
-var computeUnmatchingUnlabelledExamples = function() {
+var computeUnmatchingNegativeExamples = function() {
+  return getUnmatchingNegativeExamples().length;
+}
+
+var getUnmatchingUnlabelledExamples = function() {
   var skeleton = Session.get('skeleton');
 
   var selector = constructSelectorToFilterBaggedPatterns(computeSelectorFromSkeleton(skeleton));
@@ -2339,13 +2365,16 @@ var computeUnmatchingUnlabelledExamples = function() {
   } else {
     var mergedSelector = {'label': '?'};
   }
-  var matchingUnlabelledExamples = fetchShortestExamples(mergedSelector).count();
+  var matchingUnlabelledExamples = fetchShortestExamples(mergedSelector);
 
   // all unlabelled
-  var allUnlabelledExamples = fetchShortestExamples({'label': '?'}).count();
+  var allUnlabelledExamples = fetchShortestExamples({'label': '?'});
 
-  var currentCount = allUnlabelledExamples - matchingUnlabelledExamples;
-  return currentCount
+  return setDifference(allUnlabelledExamples, matchingUnlabelledExamples);
+}
+
+var computeUnmatchingUnlabelledExamples = function() {
+  return getUnmatchingUnlabelledExamples().length;
 }
 
 Template.node.nodeRendered = function(subgraphs) {
@@ -2402,6 +2431,30 @@ Template.body.helpers({
     });
     return examples;
   },
+  unlabelledExamples() {
+    var examples = Examples.find({label: '?'}, {sort: {label: -1}}).fetch();
+    examples.forEach(function(example) {
+      example.clusterContext = 'unlabelled';
+      render(example);
+    });
+    return examples;
+  },
+  unlabelledMatchingExamples() {
+    var examples = getMatchingUnlabelledExamples();
+    examples.forEach(function(example) {
+      example.clusterContext = 'unlabelled';
+      render(example);
+    });
+    return examples;
+  },
+  unlabelledUnmatchingExamples() {
+    var examples = getUnmatchingUnlabelledExamples();
+    examples.forEach(function(example) {
+      example.clusterContext = 'unlabelled';
+      render(example);
+    });
+    return examples;
+  },
   labelledPositiveExamples() {
     var examples = Examples.find({label: 'positive'}, {sort: {label: -1}}).fetch();
     examples.forEach(function(example) {
@@ -2410,8 +2463,40 @@ Template.body.helpers({
     });
     return examples;
   },
+  labelledMatchingPositiveExamples() {
+    var examples = getMatchingPositiveExamples();
+    examples.forEach(function(example) {
+      example.clusterContext = 'labelled';
+      render(example);
+    });
+    return examples;
+  },
+  labelledUnmatchingPositiveExamples() {
+    var examples = getUnmatchingPositiveExamples();
+    examples.forEach(function(example) {
+      example.clusterContext = 'labelled';
+      render(example);
+    });
+    return examples;
+  },
   labelledNegativeExamples() {
     var examples = Examples.find({label: 'negative'}, {sort: {label: -1}}).fetch();
+    examples.forEach(function(example) {
+      example.clusterContext = 'labelled';
+      render(example);
+    });
+    return examples;
+  },
+  labelledMatchingNegativeExamples() {
+    var examples = getMatchingNegativeExamples();
+    examples.forEach(function(example) {
+      example.clusterContext = 'labelled';
+      render(example);
+    });
+    return examples;
+  },
+  labelledUnmatchingNegativeExamples() {
+    var examples = getUnmatchingNegativeExamples();
     examples.forEach(function(example) {
       example.clusterContext = 'labelled';
       render(example);

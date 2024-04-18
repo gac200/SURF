@@ -3329,39 +3329,6 @@ Template.body.events({
         results.appendChild(searchResultElement);
       }
     });
-    // var nodes = document.getElementsByClassName('center');
-    // for (i = 0; i < nodes.length; i++) {
-    //   for (j = 0; j < examples.length; j++) {
-    //     if (nodes[i].innerText.toLowerCase().includes(examples[j])) {
-    //       col_md = nodes[i].parentNode.parentNode.parentNode.parentNode;
-    //       if (col_md.className.includes("col-md")){
-    //         col_md = col_md.parentNode.parentNode;
-    //         console.log(col_md.children[1].className);
-    //         var searchResultElement = document.createElement("result");
-    //         searchResultElement.value = col_md.children[1].className;
-    //         document.getElementById("results").appendChild(searchResultElement);
-    //       }
-    //     }
-    //   }
-    // }
-    // console.log(examples);
-
-
-    // clusters = [];
-    // for (let i = 0; i < 100; i++) {
-    //   if (document.getElementById('example-cluster-' + i + '-declaration')) {
-    //     console.log(document.getElementById('example-cluster-' + i + '-declaration'));
-    //   }
-    //   else if (document.getElementById('example-cluster-' + i + '-method')) {
-    //     console.log(i);
-    //   }
-    //   else if (document.getElementById('example-cluster-' + i + '-exception')) {
-    //     console.log(i);
-    //   }
-    //   else if (document.getElementById('example-cluster-' + i + '-error')) {
-    //     console.log(i);
-    //   }
-    // }
   },
   'mouseenter .example-cluster' (event, instance) {
     var role = $(event.target).attr('data-cluster');

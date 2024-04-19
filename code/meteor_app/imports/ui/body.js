@@ -3397,6 +3397,24 @@ Template.breadcrumb.helpers({
  * Register the event listeners on the body template
  */
 Template.body.events({
+  'keyup .form-control-search' (event, instance) {
+    var results = document.getElementById("results");
+    while (results.firstChild) {
+      results.firstChild.remove();
+    }
+    search = document.getElementById('search').value;
+    
+    fetchShortestExamples({}).forEach(function(example){
+      if (example.rawCode.includes(search)) {
+        var searchResultElement = document.createElement("option");
+        var searchIndex = example.rawCode.indexOf(search);
+        console.log(searchIndex);
+        var codeSnippet = "..." + example.rawCode.substring(Math.max(0, searchIndex - 5), Math.min(example.rawCode.length, searchIndex + search.length + 5)) + "...";
+        searchResultElement.value = example.exampleID.toString() + ": " + codeSnippet;
+        results.appendChild(searchResultElement);
+      }
+    });
+  },
   'mouseenter .example-cluster' (event, instance) {
     var role = $(event.target).attr('data-cluster');
     $('.example-cluster[data-cluster="'+role+'"]').addClass('has_border');

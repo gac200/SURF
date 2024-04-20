@@ -538,6 +538,7 @@
           {{else}}
             <div style="margin-top:50px; margin-bottom:70px"><strong>Please bootstrap a pattern using <a class="open-label-query-examples-modal btn btn-primary" data-toggle="modal" data-target="#labelQueryExamplesModal">predefined examples</a>  or <a class="open-label-all-examples-modal btn btn-primary" data-toggle="modal" data-target="#labelAllExamplesModal">view all examples</a>  </strong></div>
             <div>Afterwards, you will be able to provide feedback to SURF to refine or reinfer a pattern in this panel.</div>
+            <div><span class="loading-text hidden">Loading...</span></div>
 
             <!-- <button class="btn btn-primary " data-toggle="modal" data-target="#labelQueryExamplesModal">Bootstrap Pattern</button> -->
             <div style="padding-bottom:30vh"></div>
@@ -558,7 +559,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              <span class="loading-text hidden">Loading...</span>
+              <!-- <span class="loading-text hidden">Loading...</span> -->
               <span class="btn btn-primary refine-pattern-btn {{disabledIfNoHints}}">Reinfer pattern</span>
             </div>
 

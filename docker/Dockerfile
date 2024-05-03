@@ -11,7 +11,7 @@ RUN apt-get install -y openjdk-8-jdk
 
 
 WORKDIR /usr/src/app/
-RUN git clone https://github.com/kanghj/SURF.git
+RUN git clone https://github.com/gac200/SURF.git
 
 WORKDIR SURF/code/meteor_app
 RUN chmod -R 755 .meteor
